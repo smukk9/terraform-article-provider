@@ -9,7 +9,7 @@
 provider_installation {
 
   dev_overrides {
-    "article" = "/Users/smk/workshop/github/terrafrom-article-provider/terraform-provider-article/"
+    "article" = "/Users/{home}/github/terrafrom-article-provider/terraform-provider-article/"
   }
   direct {}
 }
