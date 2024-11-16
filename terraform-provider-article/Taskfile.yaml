@@ -1,0 +1,10 @@
+version: '3'
+
+vars:
+  EXE_NAME: terraform-provider-article
+
+tasks:
+  build-provider:
+    desc: Build the Terraform provider binary
+    cmds:
+      - go build -o {{.EXE_NAME}}

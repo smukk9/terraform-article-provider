@@ -1,0 +1,39 @@
+version: '3'
+
+vars:
+  IMAGE_NAME: go-article-http-server
+  CONTAINER_NAME: go-article-http-server
+
+tasks:
+  build:
+    desc: Build the Docker image
+    cmds:
+      - docker build -t {{.IMAGE_NAME}} .
+
+  run:
+    desc: Run the Docker container
+    deps: [stop]
+    cmds:
+      - docker run -d --name {{.CONTAINER_NAME}} -p 9999:9999 {{.IMAGE_NAME}}
+
+  stop:
+    desc: Stop and remove the Docker container
+    cmds:
+      - docker stop {{.CONTAINER_NAME}} || true
+      - docker rm {{.CONTAINER_NAME}} || true
+
+  logs:
+    desc: Show logs from the Docker container
+    cmds:
+      - docker logs {{.CONTAINER_NAME}}
+
+  clean:
+    desc: Clean up dangling containers and images
+    cmds:
+      - docker rm -f $(docker ps -aq) || true
+      - docker rmi -f $(docker images -q -f "dangling=true") || true
+
+  test:
+    desc: Test the server with a sample request
+    cmds:
+      - curl -i http://localhost:9999
