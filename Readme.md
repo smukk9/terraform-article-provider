@@ -1,4 +1,38 @@
-## Provider Learnings
+# Provider Learnings
+
+
+## Setting up provider for local testing
+
+1. create/update ~/.terraformrc file with dev_overrides
+
+```
+provider_installation {
+
+  dev_overrides {
+    "article" = "/Users/smk/workshop/github/terrafrom-article-provider/terraform-provider-article/"
+  }
+  direct {}
+}
+
+```
+
+2. Ensure the name of the provider use is like below, terraform will take care of matching. 
+
+```
+terraform {
+  required_providers {
+    article = {
+      source = "article" # This should match the dev_overrides in .terraformrc
+    }
+  }
+}
+
+```
+
+2. Ensure you build the executable of the provider code with terraform-provider-<name> in our case terraform-provider-article
+
+3. 
+
 
 1. `plugin.Serve` starts the provider server and listens for requests from Terraform. This architecture allows Terraform to continue functioning even if your provider fails.
 
