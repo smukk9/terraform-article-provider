@@ -14,14 +14,14 @@ provider "article" {
 }
 
 resource "article" "test_article" {
-  heading = "My First Article"
+  heading = "My Second Article"
   description = "This is an article created by Terraform"
-  tags = ["Terraform", "API", "Article"]
+  tags = ["Terraform", "API", "Article","blog"]
 
 }
 
 resource "article" "test2_article" {
-  heading = "My Second Article"
+  heading = "My  Article"
   description = "This is an article created by Terraform (second)"
   tags = ["Terraform"]
 

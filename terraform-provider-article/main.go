@@ -251,29 +251,39 @@ func resourceArticleRead(d *schema.ResourceData, meta interface{}) error {
 
 func resourceArticleUpdate(d *schema.ResourceData, meta interface{}) error {
 
+	// Construct the URL for the PUT request with the article ID
 	url := fmt.Sprintf("%s/api/v1/article?id=%s", meta.(string), d.Id())
 
-	article := map[string]interface{}{
-
-		"heading":     d.Get("heading").(string),
-		"description": d.Get("description").(string),
-		"tags":        d.Get("tags").([]string),
+	// Ensure tags are correctly converted to a []string type
+	tags := d.Get("tags").([]interface{}) // Get tags as []interface{}
+	var tagStrings []string
+	for _, tag := range tags {
+		tagStrings = append(tagStrings, tag.(string)) // Convert each tag to string
 	}
 
-	resp, err := sendRequest(url, "PUT", article)
+	// Create the article data to be sent in the body of the request
+	article := map[string]interface{}{
+		"heading":     d.Get("heading").(string),
+		"description": d.Get("description").(string),
+		"tags":        tagStrings, // Use the correctly typed tags
+	}
 
+	// Send the PUT request to update the article
+	resp, err := sendRequest(url, "PUT", article)
 	if err != nil {
 		return err
 	}
 
+	// Ensure the response body is closed once done
 	defer resp.Body.Close()
 
+	// If the response status is not OK, return an error
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("failed to update article: %s", resp.Status)
 	}
 
+	// After the update, read the resource again to confirm the update is reflected
 	return resourceArticleRead(d, meta)
-
 }
 
 // Resource delete function (example)
